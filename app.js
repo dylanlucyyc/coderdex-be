@@ -1,22 +1,21 @@
 const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
 const cors = require("cors");
-
 const pokemonRouter = require("./routes/pokemon");
 
 const app = express();
+const port = process.env.PORT || 4000;
 
-app.use(logger("dev"));
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
-// Pokemon routes
+// Routes
 app.use("/pokemons", pokemonRouter);
+
+// Root route
+app.get("/", (req, res) => {
+  res.send("Welcome to CoderDex API!");
+});
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -25,4 +24,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-module.exports = app;
+app.listen(port, () => {
+  console.log(`CoderDex API listening on port ${port}`);
+});
