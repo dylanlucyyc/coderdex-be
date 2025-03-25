@@ -2,7 +2,7 @@ require("dotenv").config();
 const fs = require("fs");
 const csv = require("csvtojson");
 
-const url = process.env.URL;
+const url = process.env.MYURL;
 
 const createPokemon = async () => {
   let newData = await csv().fromFile("Pokemon.csv");
