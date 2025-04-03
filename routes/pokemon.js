@@ -22,13 +22,13 @@ const writePokemonData = (pokemons) => {
 router.get("/", (req, res) => {
   try {
     const pokemons = readPokemonData();
-    const { type, name } = req.query;
+    const { types, name, page = 1, limit = 20 } = req.query;
 
     let filteredPokemons = pokemons;
 
-    if (type) {
+    if (types) {
       filteredPokemons = filteredPokemons.filter((p) =>
-        p.type.map((t) => t.toLowerCase()).includes(type.toLowerCase())
+        p.types.map((t) => t.toLowerCase()).includes(types.toLowerCase())
       );
     }
 
@@ -38,7 +38,18 @@ router.get("/", (req, res) => {
       );
     }
 
-    res.json({ data: filteredPokemons, total: filteredPokemons.length });
+    // Calculate pagination
+    const startIndex = (parseInt(page) - 1) * parseInt(limit);
+    const endIndex = startIndex + parseInt(limit);
+    const paginatedPokemons = filteredPokemons.slice(startIndex, endIndex);
+
+    res.json({
+      data: paginatedPokemons,
+      total: filteredPokemons.length,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      totalPages: Math.ceil(filteredPokemons.length / parseInt(limit)),
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
