@@ -65,9 +65,11 @@ const getAdjacentPokemon = (pokemons, currentId) => {
     parseInt(currentId) === maxId ? "1" : (parseInt(currentId) + 1).toString();
 
   return {
-    previousPokemon: pokemons.find((p) => p.id === prevId),
-    pokemon: pokemons[currentIndex],
-    nextPokemon: pokemons.find((p) => p.id === nextId),
+    data: {
+      previousPokemon: pokemons.find((p) => p.id === prevId),
+      pokemon: pokemons[currentIndex],
+      nextPokemon: pokemons.find((p) => p.id === nextId),
+    },
   };
 };
 
