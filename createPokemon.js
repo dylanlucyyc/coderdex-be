@@ -12,7 +12,7 @@ const createPokemon = async () => {
     .map((e) => ({
       id: e["#"],
       name: e.Name,
-      type: [e["Type 1"], e["Type 2"]].filter(Boolean), // Remove null/undefined types
+      types: [e["Type 1"], e["Type 2"]].filter(Boolean), // Remove null/undefined types
       url: url + "images/" + e["#"],
     }))
     .filter((e) => e.name);
