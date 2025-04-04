@@ -22,19 +22,30 @@ const writePokemonData = (pokemons) => {
 router.get("/", (req, res) => {
   try {
     const pokemons = readPokemonData();
-    const { types, name, page = 1, limit = 20 } = req.query;
+    const { type, name, search, page = 1, limit = 20 } = req.query;
 
     let filteredPokemons = pokemons;
 
-    if (types) {
+    if (type) {
+      const typeArray = types
+        .split(",")
+        .map((type) => type.toLowerCase().trim());
       filteredPokemons = filteredPokemons.filter((p) =>
-        p.types.map((t) => t.toLowerCase()).includes(types.toLowerCase())
+        typeArray.some((type) =>
+          p.type.map((t) => t.toLowerCase()).includes(type)
+        )
       );
     }
 
     if (name) {
       filteredPokemons = filteredPokemons.filter((p) =>
         p.name.toLowerCase().includes(name.toLowerCase())
+      );
+    }
+
+    if (search) {
+      filteredPokemons = filteredPokemons.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
